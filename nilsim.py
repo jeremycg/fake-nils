@@ -4,10 +4,12 @@ nloci = 1000#number of loci per chromosome
 nchro = 6 #number of chromosomes per worm
 
 
+
 def makeparent(x,y,z): #function to make the parentals
-	return([[[z]*x]*2]*y) #making a list of loci
+        return([[[z]*x]*2]*y) #making a list of loci
 
-
+parent0=makeparent(nloci,nchro,0)
+parent1=makeparent(nloci,nchro,1)
 
 #so parents are [[[c1l1s1,c1l2s1],[c1l1s2,c1l2s2].....],[[c2l1s1,c2l2s1]...]]
 #for now looks like [[[0,0],[0,0]]...]
@@ -32,19 +34,29 @@ def combinegametes(gamete1,gamete2):#makes new individual from two gametes
 #lets write a function to do it
 #the below function is recursive - it takes a list of crosses to carry out, does the first one, then
 #deletes it off the list, and returns the offspring and the list to the same function.
-#the siblings are a hack - we need sibling mating.
-#By checking the list[2] and making an if else it could be fixed. - do if it gets too long to run
-def cross(list1,parent,sibling):#function of croses to do, the parent and a sibling
+def cross(list1,parent,sibling=0):#function of croses to do, the parent and a sibling
         if len(list1)==0:#if all our crosses are done, return the offspring
                 return(parent)
-        elif(list1[0])==1:#if the cross is 1, backcross to parent 1
-                return(cross(list1[1:],combinegametes(makegametes(parent),makegametes(parent1)),combinegametes(makegametes(parent),makegametes(parent1))))
-        elif(list1[0])==0:#if the cross is 0, backcross to parent 0
-                return(cross(list1[1:],combinegametes(makegametes(parent),makegametes(parent0)),combinegametes(makegametes(parent),makegametes(parent0))))
-        elif(list1[0])=="sib":#if the cross is sib, sib mate
-                return(cross(list1[1:],combinegametes(makegametes(parent),makegametes(sibling)),combinegametes(makegametes(parent),makegametes(sibling))))
-        elif(list1[0])=="self":#if the cross is self, self
-                return(cross(list1[1:],combinegametes(makegametes(parent),makegametes(parent)),combinegametes(makegametes(parent),makegametes(parent))))
+        elif(len(list1)==1 or list1[1]!="sib"):
+                if(list1[0])==1:#if the cross is 1, backcross to parent 1
+                        return(cross(list1[1:],combinegametes(makegametes(parent),makegametes(parent1))))
+                elif(list1[0])==0:#if the cross is 0, backcross to parent 0
+                        return(cross(list1[1:],combinegametes(makegametes(parent),makegametes(parent0))))
+                elif(list1[0])=="sib":#if the cross is sib, sib mate
+                        return(cross(list1[1:],combinegametes(makegametes(parent),makegametes(sibling))))
+                elif(list1[0])=="self":#if the cross is self, self
+                        return(cross(list1[1:],combinegametes(makegametes(parent),makegametes(parent))))
+        elif(list1[1]=="sib"):
+                if(list1[0])==1:#if the cross is 1, backcross to parent 1
+                        return(cross(list1[1:],combinegametes(makegametes(parent),makegametes(parent1)),combinegametes(makegametes(parent),makegametes(parent1))))
+                elif(list1[0])==0:#if the cross is 0, backcross to parent 0
+                        return(cross(list1[1:],combinegametes(makegametes(parent),makegametes(parent0)),combinegametes(makegametes(parent),makegametes(parent0))))
+                elif(list1[0])=="sib":#if the cross is sib, sib mate
+                        return(cross(list1[1:],combinegametes(makegametes(parent),makegametes(sibling)),combinegametes(makegametes(parent),makegametes(sibling))))
+                elif(list1[0])=="self":#if the cross is self, self
+                        return(cross(list1[1:],combinegametes(makegametes(parent),makegametes(parent)),combinegametes(makegametes(parent),makegametes(parent))))
+
+
 
 #ok! so now we can call cross on a list, where 0 is a backcross to parent0 and 1 to 1, an "s" is a sibling mating
 #NILs were cross([1,1,1,1,1,1,"sib","sib","sib","sib","sib","sib"],parent0)
