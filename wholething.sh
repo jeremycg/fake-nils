@@ -7,6 +7,6 @@
 #makes several tempout files - these can be deleted but are left in for troubleshooting
 
 python cut.py $2 tempout.txt $3 $4
-python fakesreads.py tempout.txt tempout.fastq $5 $6
+python fakereads.py tempout.txt tempout.fastq $5 $6
 bash align.sh tempout.fastq $7 $8 tempout.fq
 python fakeparent.py tempout.fq $7 $9
