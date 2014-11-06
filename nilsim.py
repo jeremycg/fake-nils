@@ -1,15 +1,6 @@
-import random
-
-nloci = 1000#number of loci per chromosome
-nchro = 6 #number of chromosomes per worm
-
-
 
 def makeparent(x,y,z): #function to make the parentals
         return([[[z]*x]*2]*y) #making a list of loci
-
-parent0=makeparent(nloci,nchro,0)
-parent1=makeparent(nloci,nchro,1)
 
 #so parents are [[[c1l1s1,c1l2s1],[c1l1s2,c1l2s2].....],[[c2l1s1,c2l2s1]...]]
 #for now looks like [[[0,0],[0,0]]...]
@@ -93,3 +84,10 @@ def introgressions(individ,vartocount):#function of individual, then 0 or 1
                                 e+=[d]#adds to list
                         d=0#resets counter for next
         return(e)#returns the list
+
+def crosschrom(chrom):
+    breaks=[chrom[0]]
+    for i in range(1,len(chrom)):
+        if chrom[i]!=chrom[i-1]:
+            breaks.append(i)
+    return(breaks)
