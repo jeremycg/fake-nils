@@ -9,7 +9,7 @@ def makegametes(parent):#function to make gametes from individual
         gamete=[]#blanks the gamete
         for chromo in parent:#for each chromosome
                 startingchr=random.randint(0,1)#choose the starting chromosome
-                breakpoint=random.randint(1,nloci-1)#set the breakpoint
+                breakpoint=random.randint(1,len(chromo[0])-1)#set the breakpoint
                 gamete+=[chromo[startingchr][0:breakpoint]+chromo[1-startingchr][breakpoint:]]
                 #above makes the gamete - starting from the startingchr until the breakpoint
                 #then continuing to the end
@@ -57,13 +57,14 @@ def cross(list1,parent,sibling=0):#function of croses to do, the parent and a si
 
 def percentageril(ril):#function of individual
         oneflat=[item for sublist in ril for item in sublist]#flattens one level
-        return(sum([item for sublist in oneflat for item in sublist])/(2*nloci*nchro))#flattens another level, finds percentage
+        flatlist=[item for sublist in oneflat for item in sublist]#flattens one more level
+        return(sum(flatlist)/(len(flatlist)))#finds percentage
 
 #repeats it to give a number of percentages out
-def repril(repeats,crosslist):#function of crosslist, number of repeats
+def repril(repeats,crosslist,initparent):#function of crosslist, number of repeats
         d=[]#clears holder
         for i in range(1,repeats):#loops by num repeats
-                x=cross(crosslist,parent0,parent0)#cross
+                x=cross(crosslist,initparent,initparent)#cross
                 d+=[percentageril(x)]#finds percentage
         return(d)#returns percent
 

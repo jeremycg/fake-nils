@@ -17,15 +17,9 @@ handle.close()
 
 nchrom=len(records)
 nloci=int(sys.argv[5])
-nilsim.nloci=nloci
 
 parent0=nilsim.makeparent(nloci,nchro,0)
 parent1=nilsim.makeparent(nloci,nchro,1)
-nilsim.parent0=parent0
-nilsim.parent1=parent1
 
-print(sys.argv[3])
-print(sys.argv[4])
-print(nilsim.cross(sys.argv[3],sys.argv[4]))
-
-print(nilsim.cross([1,1,1,1,1,1,"self","self","self","self","self","self"],parent0))
+print(nilsim.cross(eval(sys.argv[3]),eval(sys.argv[4])))
+print(nilsim.cross([1,1,1,1,1,1,"self","self","self","self","self","self"],eval(sys.argv[4])))
