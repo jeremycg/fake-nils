@@ -6,7 +6,7 @@
 
 import sys
 from Bio import SeqIO
-from nilsim import combinegametes,makeparent,makegametes
+from nilsim import combinegametes,makeparent,makegametes,crosschrom,percentageril
 import random
 
 handle = open(sys.argv[1], "rU")
@@ -43,5 +43,8 @@ nloci=int(sys.argv[5])
 parent0=makeparent(nloci,nchrom,0)
 parent1=makeparent(nloci,nchrom,1)
 
-print(cross(eval(sys.argv[3]),eval(sys.argv[4])))
-print(cross([1,1,1,1,1,1,"self","self","self","self","self","self"],eval(sys.argv[4])))
+fakenil=cross(eval(sys.argv[3]),eval(sys.argv[4]))
+for chrom in fakenil:
+    for sister in chrom:
+        print(crosschrom(sister))
+print(percentageril(fakenil))
