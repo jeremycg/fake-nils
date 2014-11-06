@@ -44,7 +44,5 @@ parent0=makeparent(nloci,nchrom,0)
 parent1=makeparent(nloci,nchrom,1)
 
 fakenil=cross(eval(sys.argv[3]),eval(sys.argv[4]))
-for chrom in fakenil:
-    for sister in chrom:
-        print(crosschrom(sister))
+print(crosschrom(fakenil))
 print(percentageril(fakenil))

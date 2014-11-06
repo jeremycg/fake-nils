@@ -66,9 +66,13 @@ def introgressions(individ,vartocount):#function of individual, then 0 or 1
                         d=0#resets counter for next
         return(e)#returns the list
 
-def crosschrom(chrom):
-    breaks=[chrom[0]]
-    for i in range(1,len(chrom)):
-        if chrom[i]!=chrom[i-1]:
-            breaks.append(i)
-    return(breaks)
+def crosschrom(individual):
+    out=[]
+    for chrom in individual:
+        for sister in chrom:
+            breaks=[sister[0]]
+            for i in range(1,len(sister)):
+                if sister[i]!=sister[i-1]:
+                    breaks.append(i)
+            out+=[breaks]
+    return(out)
