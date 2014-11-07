@@ -130,3 +130,25 @@ def makenil(parent0,parent1,lenslist,outputfile):
     handle0.close()
     filetowrite.close()
     print("done!")
+
+def cutme(inputfile,mindist,maxdist,outputfile,barcode=""):
+    handle = open(inputfile, "r")
+    records = list(SeqIO.parse(handle, "fasta"))
+    handle.close()
+    for chr in records:
+        seq=chr.seq.upper()
+        counter=-1
+        filetowrite=open(outputfile, 'a')
+        while counter<len(seq)-3:
+            count2=seq.find("TTAA",counter+1)
+            if count2==-1:
+                break
+            if count2-counter > mindist and count2-counter < maxdist:
+                if counter==-1:
+                    countprint=0
+                else:
+                    countprint=counter
+                print(">",str(chr.id),str(counter),str(count2), file=filetowrite,sep='_')
+                print(barcode,seq[countprint:count2+4],file=filetowrite,sep="")
+            counter=count2
+        filetowrite.close()
