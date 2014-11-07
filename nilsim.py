@@ -1,4 +1,5 @@
 import random
+from Bio import SeqIO
 
 def makeparent(x,y,z): #function to make the parentals
         return([[[z]*x]*2]*y) #making a list of loci
@@ -89,3 +90,43 @@ def convertlens(nilbreak,parental,nillen):
         for a in nilbreak[i][1:]:
             output[i]+=[factor*a]
     return(output)
+
+def makenil(parent0,parent1,lenslist,outputfile):
+    handle0 = open(parent0, "r")
+    parent0 = list(SeqIO.parse(handle0, "fasta"))
+    handle1 = open(parent1, "r")
+    parent1 = list(SeqIO.parse(handle1, "fasta"))
+    filetowrite=open(outputfile, 'a')
+    todo=[]
+    for i in range(len(parent0)):
+        todo+=[i,i]
+    for chrom in range(len(lenslist)):
+        chromprint=""
+        counter=0
+        while len(lenslist[chrom])>0:
+            if len(lenslist[chrom])==1:
+                if lenslist[chrom][0]==0:
+                    print(">",str(parent0[todo[chrom]].id), file=filetowrite,sep='_')
+                    print(chromprint,str(parent0[todo[chrom]].seq)[counter:],file=filetowrite,sep='')
+                    lenslist[chrom]=[]
+                if lenslist[chrom][0]==1:
+                    print(">",str(parent1[todo[chrom]].id), file=filetowrite,sep='_')
+                    print(chromprint,str(parent1[todo[chrom]].seq)[counter:],file=filetowrite,sep='')
+                    lenslist[chrom]=[]
+            else:
+                if lenslist[chrom][0]==0:
+                    chromprint+=str(parent0[todo[chrom]].seq)[counter:round(lenslist[chrom][1])]
+                    counter=round(lenslist[chrom][1])+1
+                    lenslist[chrom][0]=1-lenslist[chrom][0]
+                    del(lenslist[chrom][1])
+                    break
+                if lenslist[chrom][0]==1:
+                    chromprint+=str(parent1[todo[chrom]].seq)[counter:round(lenslist[chrom][1])]
+                    counter=round(lenslist[chrom][1])+1
+                    lenslist[chrom][0]=1-lenslist[chrom][0]
+                    del(lenslist[chrom][1])
+                    break
+    handle1.close()
+    handle0.close()
+    filetowrite.close()
+    print("done!")
