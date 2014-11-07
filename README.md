@@ -7,10 +7,12 @@ No indels are included - this allows a simple syntenic genome. Used to create a 
 
 This is in general a terrible idea, but useful when one genome is of very poor quality and synteny, even forced, will help analysis.
 
+Two main functions here:
+
+* Use wholething.sh to go from one good parental genome and one bad, to create a fake syntenic parent
+* Use fakenil.py to use this syntenic genome to create fake hybrids based on a given cross scheme. 
 
 
 Todo:
 
-Create fake NILs from the given parental genomes - can we detect introgressions?
-
-Some sensible double checking of reads - some of out reads will come from places that do not cut in both genomes - can we filter these out, so only "informative" reads are mapped?
+* Some sensible double checking of reads - some of out reads will come from places that do not cut in both genomes - can we filter these out, so only "informative" reads are mapped?
