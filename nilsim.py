@@ -108,10 +108,12 @@ def makenil(parent0,parent1,lenslist,outputfile):
                     print(">",str(parent0[todo[chrom]].id), file=filetowrite,sep='_')
                     print(chromprint,str(parent0[todo[chrom]].seq)[counter:],file=filetowrite,sep='')
                     lenslist[chrom]=[]
+                    break
                 if lenslist[chrom][0]==1:
                     print(">",str(parent1[todo[chrom]].id), file=filetowrite,sep='_')
                     print(chromprint,str(parent1[todo[chrom]].seq)[counter:],file=filetowrite,sep='')
                     lenslist[chrom]=[]
+                    break
             elif lenslist[chrom][0]==0:
                     chromprint+=str(parent0[todo[chrom]].seq)[counter:round(lenslist[chrom][1])]
                     counter=round(lenslist[chrom][1])+1
