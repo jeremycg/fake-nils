@@ -76,3 +76,16 @@ def crosschrom(individual):
                     breaks.append(i)
             out+=[breaks]
     return(out)
+
+def convertlens(nilbreak,parental,nillen):
+    output=[]
+    todo=[]
+    for i in range(len(parental)):
+        todo+=[i,i]
+    print(todo)
+    for i in range(len(nilbreak)):
+        factor=len(parental[todo[i]])/nillen
+        output.append([nilbreak[i][0]])
+        for a in nilbreak[i][1:]:
+            output[i]+=[factor*a]
+    return(output)

@@ -6,7 +6,7 @@
 
 import sys
 from Bio import SeqIO
-from nilsim import combinegametes,makeparent,makegametes,crosschrom,percentageril
+from nilsim import combinegametes,makeparent,makegametes,crosschrom,percentageril,convertlens
 import random
 
 handle = open(sys.argv[1], "rU")
