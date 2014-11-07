@@ -2,11 +2,11 @@
 #simulates a given cross based on a given number of loci per chromosome in parental genomes
 #outputs a phased haploid genome sequence based on the simulated crosses
 #gives a percentage of each parent
-#usage: fakenil.py parent0.fa parent1.fa cross crossparent nloci output.fa
+#usage: fakenil.py parent0.fa parent1.fa cross crossparent nloci output.fa barcode
 
 import sys
 from Bio import SeqIO
-from nilsim import combinegametes,makeparent,makegametes,crosschrom,percentageril,convertlens,makenil,cutme
+from nilsim import combinegametes,makeparent,makegametes,crosschrom,percentageril,convertlens,makenil,cutme,writefastq
 import random
 
 handle = open(sys.argv[1], "rU")
@@ -46,3 +46,6 @@ parent1=makeparent(nloci,nchrom,1)
 fakenil=cross(eval(sys.argv[3]),eval(sys.argv[4]))
 print(crosschrom(fakenil))
 print(percentageril(fakenil))
+makenil("parent1_ref.fa","fakep2.fa",convertlens(crosschrom(fakenil),records,10000),"nilgenome.fa")
+cutme("nilgenome.fa",100,350,"nilfragments.fa",sys.argv[7])
+writefastq("nilfragments.fa",sys.argv[6],5,40)

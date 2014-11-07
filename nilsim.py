@@ -83,7 +83,6 @@ def convertlens(nilbreak,parental,nillen):
     todo=[]
     for i in range(len(parental)):
         todo+=[i,i]
-    print(todo)
     for i in range(len(nilbreak)):
         factor=len(parental[todo[i]])/nillen
         output.append([nilbreak[i][0]])
@@ -109,23 +108,24 @@ def makenil(parent0,parent1,lenslist,outputfile):
                     print(">",str(parent0[todo[chrom]].id), file=filetowrite,sep='_')
                     print(chromprint,str(parent0[todo[chrom]].seq)[counter:],file=filetowrite,sep='')
                     lenslist[chrom]=[]
+                    print("1",lenslist[chrom])
                 if lenslist[chrom][0]==1:
                     print(">",str(parent1[todo[chrom]].id), file=filetowrite,sep='_')
                     print(chromprint,str(parent1[todo[chrom]].seq)[counter:],file=filetowrite,sep='')
                     lenslist[chrom]=[]
-            else:
-                if lenslist[chrom][0]==0:
+                    print("2",lenslist[chrom])
+            elif lenslist[chrom][0]==0:
                     chromprint+=str(parent0[todo[chrom]].seq)[counter:round(lenslist[chrom][1])]
                     counter=round(lenslist[chrom][1])+1
                     lenslist[chrom][0]=1-lenslist[chrom][0]
                     del(lenslist[chrom][1])
-                    break
-                if lenslist[chrom][0]==1:
+                    print("3",lenslist[chrom])
+            elif lenslist[chrom][0]==1:
                     chromprint+=str(parent1[todo[chrom]].seq)[counter:round(lenslist[chrom][1])]
                     counter=round(lenslist[chrom][1])+1
                     lenslist[chrom][0]=1-lenslist[chrom][0]
                     del(lenslist[chrom][1])
-                    break
+                    print("4",lenslist[chrom])
     handle1.close()
     handle0.close()
     filetowrite.close()
@@ -152,3 +152,16 @@ def cutme(inputfile,mindist,maxdist,outputfile,barcode=""):
                 print(barcode,seq[countprint:count2+4],file=filetowrite,sep="")
             counter=count2
         filetowrite.close()
+
+def writefastq(infile,outfile,coverage,quality):
+    handle = open(infile, "rU")
+    records = list(SeqIO.parse(handle, "fasta"))
+    handle.close()
+    handle = open(outfile, "a")
+    for sequence in records:
+        rec = sequence
+        rec.letter_annotations["phred_quality"] = [quality] * len(sequence.seq)
+        recs = [ rec ]
+        for i in range(coverage):
+            SeqIO.write(recs, handle, "fastq")
+    handle.close()
