@@ -159,7 +159,8 @@ def writefastq(infile,outfile,coverage,quality):
     for sequence in records:
         rec = sequence
         rec.letter_annotations["phred_quality"] = [quality] * len(sequence.seq)
-        recs = [ rec ]
         for i in range(coverage):
-            SeqIO.write(recs, handle, "fastq")
+            towrite=rec
+            towrite.id=towrite.id+str(i)
+            SeqIO.write(towrite, handle, "fastq")
     handle.close()
