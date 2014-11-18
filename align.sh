@@ -12,11 +12,12 @@ elif [ $3 = "stampy" ]
 then
 	stampy.py -G hashed $2
 	stampy.py -g hashed -H hashed
-	stampy.py -g hashed -h hashed -M $1 --substitutionrate=0.05 -o aln-se.sam -t 4
+	bwa index $2
+	bwa mem -t 4 $2 $1 | samtools view -Sb - > bwa.bam
+	stampy.py -g hashed -h hashed -t4 --bamkeepgoodreads -M bwa.bam -o aln-se.sam --substitutionrate=0.15
 else
 echo "invalid method"
 fi
-
 samtools view -S -b -o se-aln.bam aln-se.sam
 samtools sort se-aln.bam se-alnsort
 samtools mpileup -ugf $2 se-alnsort.bam | bcftools view -bvcg - > var.raw.bcf
