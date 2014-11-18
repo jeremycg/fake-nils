@@ -1,6 +1,6 @@
 #takes the output from cut.py, and makes a .fastq with fake qualities and given coverage
 #usage fakereads.py inputtxt outputfastq coverage quality
-#example fakesreads.py outp2.txt outp2.fastq 10 40
+#example fakereads.py outp2.txt outp2.fastq 10 40
 
 import Bio
 import sys
