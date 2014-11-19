@@ -1,10 +1,10 @@
 #takes output of align.sh, changes it from a fastq to a fasta, then fills in ns
 #ns are taken from the reference genome at the same location
 #indels are removed in the vcutils step to ensure direct synteny
-#usage: fakeparent.py input.fq refparent.fa output.fa 
+#usage: fakeparent.py input.fq refparent.fa output.fa
 #example usage: fakeparent.py fake1.fq parent1_ref.fa fakedp2.fa
 
-import Bio
+from Bio import SeqIO
 import sys
 
 SeqIO.convert(sys.argv[1], "fastq-illumina", "tempfa.fa", "fasta")
@@ -27,9 +27,7 @@ for chromosome in range(len(mappedrecords)):
 		else:
 			print(mappedrecords[chromosome].seq[base].upper(),sep="",file=filetowrite,end="")
 		lastbasedone=base
-	if len(mappedrecords[chromosome].seq)==len(refrecords[chromosome].seq):
-		break
-	else:
+	if len(mappedrecords[chromosome].seq)!=len(refrecords[chromosome].seq):
 		print(mappedrecords[chromosome].seq[lastbasedone:].upper(),sep="",file=filetowrite)
 
 filetowrite.close()
