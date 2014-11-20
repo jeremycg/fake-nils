@@ -100,7 +100,6 @@ def makenil(parent0,parent1,lenslist,outputfile):
     for i in range(len(parent0)):
         todo+=[i,i]
     for chrom in range(len(lenslist)):
-        assert(len(parent0[chrom])==len(parent1[chrom])),"Chromosomes are different lengths"
         chromprint=""
         counter=0
         while len(lenslist[chrom])>0:
