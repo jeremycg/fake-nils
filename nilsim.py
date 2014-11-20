@@ -100,7 +100,7 @@ def makenil(parent0,parent1,lenslist,outputfile):
     for i in range(len(parent0)):
         todo+=[i,i]
     for chrom in range(len(lenslist)):
-        assert(len(parent0[chrom])==len(parent1[chrom]))
+        assert(len(parent0[chrom])==len(parent1[chrom])),"Chromosomes are different lengths"
         chromprint=""
         counter=0
         while len(lenslist[chrom])>0:
@@ -165,3 +165,23 @@ def writefastq(infile,outfile,coverage,quality):
             towrite.id=towrite.id+str(i)
             SeqIO.write(towrite, handle, "fastq")
     handle.close()
+
+def parental(tempfa,ref,output):
+    handle = open(tempfa, "rU")
+    mappedrecords = list(SeqIO.parse(handle, "fasta"))
+    handle.close()
+    handle = open(ref, "rU")
+    refrecords = list(SeqIO.parse(handle, "fasta"))
+    handle.close()
+    output_handle = open(output, "w")
+    for chrom in range(len(mappedrecords)):
+        mappedrecords[chrom].seq = mappedrecords[chrom].seq.tomutable()
+        for base in range(len(mappedrecords[chrom])):
+            if mappedrecords[chrom].seq[base]=="n":
+                mappedrecords[chrom].seq[base]=str(refrecords[chrom].seq[base]).upper()
+            else:
+                mappedrecords[chrom].seq[base]=mappedrecords[chrom].seq[base].upper()
+        if len(mappedrecords[chrom])!=len(refrecords[chrom]):
+                mappedrecords[chrom]+=refrecords[chrom][len(mappedrecords[chrom]):]
+    SeqIO.write(mappedrecords, output_handle, "fasta")
+    output_handle.close()

@@ -5,29 +5,8 @@
 #example usage: fakeparent.py fake1.fq parent1_ref.fa fakedp2.fa
 
 from Bio import SeqIO
+from nilsim import parental
 import sys
 
 SeqIO.convert(sys.argv[1], "fastq-illumina", "tempfa.fa", "fasta")
-
-handle = open(sys.argv[2], "rU")
-refrecords = list(SeqIO.parse(handle, "fasta"))
-handle.close()
-
-handle = open("tempfa.fa", "rU")
-mappedrecords = list(SeqIO.parse(handle, "fasta"))
-handle.close()
-
-filetowrite=open(sys.argv[3], 'a')
-
-for chromosome in range(len(mappedrecords)):
-	print(">",mappedrecords[chromosome].id,file=filetowrite)
-	for base in range(len(mappedrecords[chromosome].seq)):
-		if mappedrecords[chromosome].seq[base]=="n":
-			print(refrecords[chromosome].seq[base].upper(),sep="",file=filetowrite,end="")
-		else:
-			print(mappedrecords[chromosome].seq[base].upper(),sep="",file=filetowrite,end="")
-		lastbasedone=base
-	if len(mappedrecords[chromosome].seq)!=len(refrecords[chromosome].seq):
-		print(mappedrecords[chromosome].seq[lastbasedone:].upper(),sep="",file=filetowrite)
-
-filetowrite.close()
+parental("tempfa.fa",sys.argv[2],sys.argv[3])
