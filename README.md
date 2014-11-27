@@ -16,3 +16,4 @@ Two main functions here:
 Todo:
 
 * Some sensible double checking of reads - some of out reads will come from places that do not cut in both genomes - can we filter these out, so only "informative" reads are mapped?
+* Make a complete fake NIL pipe, not worrying about restriction sites, so as to remove restriction sites present in ref but not in test
