@@ -4,21 +4,21 @@
 import sys
 from Bio import SeqIO
 
-def cutme2(seq,seqid,outputfile):
+def cutme2(seq,seqid,outputconnection):
   counter=0
-  filetowrite=open(outputfile, 'a')
   while counter<len(seq)-150:
     countprint=counter
-    print(">",str(seqid),str(counter), file=filetowrite,sep='_')
-    print(seq[countprint:countprint+150],file=filetowrite)
+    print(">",str(seqid),str(counter), file=outputconnection,sep='_')
+    print(seq[countprint:countprint+150],file=outputconnection)
     counter+=10
-  filetowrite.close()
 
 
 
 handle = open(sys.argv[1], "rU")
+handleout = open(sys.argv[2], "w")
 records = list(SeqIO.parse(handle, "fasta"))
 handle.close()
 for i in records:
     i.seq=i.seq.upper()
-    cutme2(i.seq,i.id,sys.argv[2])
+    cutme2(i.seq,i.id,handleout)
+handleout.close()
